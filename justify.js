@@ -56,15 +56,17 @@ client.on("messageCreate", async message => {
 
 client.on('guildMemberAdd', (member) => {
   const mesajlar = [
-    `🥳 **${member.user.username}**#${member.user.discriminator} geldiğine çok sevindik.`,
-    `🍕 Merhaba **${member.user.username}**#${member.user.discriminator}, umarım yanında pizza getirmişsindir.`,
-    `**${member.user.username}**#${member.user.discriminator} burada.`,
-    `🖐🏻 Justify topluluğuna hoş geldin **${member.user.username}**#${member.user.discriminator}. Millete merhaba desene!`,
-    `🥳 **${member.user.username}**#${member.user.discriminator} geldi, Herkes merhaba desin.`,
-    `Seni görmek ne güzel, **${member.user.username}**#${member.user.discriminator}.`,
-    `🐾 Vahşi bir **${member.user.username}**#${member.user.discriminator} belirdi.`,
-    `🎉 **${member.user.username}**#${member.user.discriminator} partiye katıldı.`,
-    `🥳 **${member.user.username}**#${member.user.discriminator} çıkageldi.`
+    `🥳 **${member.user.username}** geldiğine çok sevindik.`,
+    `🍕 Merhaba **${member.user.username}**, umarım yanında pizza getirmişsindir.`,
+    `**${member.user.username}** burada.`,
+    `🖐🏻 Justify topluluğuna hoş geldin **${member.user.username}**. Millete merhaba desene!`,
+    `🥳 **${member.user.username}** geldi, Herkes merhaba desin.`,
+    `Seni görmek ne güzel, **${member.user.username}**.`,
+    `🐾 Vahşi bir **${member.user.username}** belirdi.`,
+    `🎉 **${member.user.username}** partiye katıldı.`,
+    `🥳 **${member.user.username}** çıkageldi.`,
+    `✨ **${member.user.username}** seni görmek güzel, Hadi herkese merhaba de!`,
+    `🎉 Sunucuya katılmayı başardın **${member.user.username}**.`
   ];
 
   const mesajBoyutu = mesajlar.length;
@@ -95,7 +97,7 @@ client.on('voiceStateUpdate', async (eskiKanal, yeniKanal) => {
 
   if(!eskiKanal.channel && yeniKanal.channel.id === '1105864771087122572') {
     const kanal = await yeniKanal.guild.channels.create({
-      name: üye.tag,
+      name: üye.username,
       type: ChannelType.GuildVoice,
       parent: yeniKanal.channel.parentId,
       permissionOverwrites: [
@@ -103,7 +105,8 @@ client.on('voiceStateUpdate', async (eskiKanal, yeniKanal) => {
           id: üye.id,
           allow: [
             PermissionsBitField.Flags.Speak,
-            PermissionsBitField.Flags.Stream,
+            PermissionsBitField.Flags.Connect,
+            PermissionsBitField.Flags.Stream
           ],
         },
         {
@@ -118,13 +121,5 @@ client.on('voiceStateUpdate', async (eskiKanal, yeniKanal) => {
 
   if (voice.get(eskiKanal.channelId) && eskiKanal.channel.members.size == 0) return eskiKanal.channel.delete().catch(() => {});
 })
-
-const express = require('express');
-const app = express();
-const http = require('http');
-app.get('/', (request, response) => {
-    response.sendStatus(200);
-});
-app.listen(4000);
 
 client.login("")
