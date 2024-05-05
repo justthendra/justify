@@ -55,7 +55,7 @@ client.on("messageCreate", async message => {
 });
 
 client.on('guildMemberAdd', (member) => {
-  const mesajlar = [
+  const messages = [
     `🥳 **${member.user.username}** geldiğine çok sevindik.`,
     `🍕 Merhaba **${member.user.username}**, umarım yanında pizza getirmişsindir.`,
     `**${member.user.username}** burada.`,
@@ -69,40 +69,40 @@ client.on('guildMemberAdd', (member) => {
     `🎉 Sunucuya katılmayı başardın **${member.user.username}**.`
   ];
 
-  const mesajBoyutu = mesajlar.length;
-  const rastgeleMesaj = Math.random() * mesajBoyutu;
-  const rastgele = Math.floor(rastgeleMesaj);
+  const messageLength = messages.length;
+  const randomMessage = Math.random() * messagessLength;
+  const random = Math.floor(randomMessage);
 
-  const rastgelemesaj = mesajlar[rastgele];
+  const randommessage = messages[random];
 
-  const kanal = "1105863983266799616";
-  const kanall = member.guild.channels.cache.find(c => c.id === kanal)
+  const channel = "1105863983266799616";
+  const channell = member.guild.channels.cache.find(c => c.id === channel)
 
-  const rol = "1105862221675900939";
-  const roll = member.guild.roles.cache.find(r => r.id === rol)
-  member.roles.add(roll)
+  const role = "1105862221675900939";
+  const rolee = member.guild.roles.cache.find(r => r.id === role)
+  member.roles.add(rolee)
 
-  const girişMesaj = new EmbedBuilder()
+  const loginMessage = new EmbedBuilder()
   .setAuthor({name: "Bir kullanıcı topluluğumuza katıldı.", iconURL: member.user.displayAvatarURL()})
   .setColor("Random")
-  .setDescription(rastgelemesaj + ` Seninle birlikte \`${member.guild.memberCount}\` kişi olduk!`)
+  .setDescription(randommessage + ` Seninle birlikte \`${member.guild.memberCount}\` kişi olduk!`)
   .setFooter({text: "Justify", iconURL: client.user.displayAvatarURL()})
   .setTimestamp()
-  kanall.send({embeds: [girişMesaj]})
+  channell.send({embeds: [loginMessage]})
 })
 
-client.on('voiceStateUpdate', async (eskiKanal, yeniKanal) => {
-  const üye = await client.users.fetch(yeniKanal.id);
-  const kullanıcı = yeniKanal.guild.members.fetch(üye);
+client.on('voiceStateUpdate', async (oldChannel, newChannel) => {
+  const member = await client.users.fetch(newChannel.id);
+  const user = newChannel.guild.members.fetch(member);
 
-  if(!eskiKanal.channel && yeniKanal.channel.id === '1105864771087122572') {
-    const kanal = await yeniKanal.guild.channels.create({
-      name: üye.username,
+  if(!oldChannel.channel && newChannel.channel.id === '1105864771087122572') {
+    const channel = await newChannel.guild.channels.create({
+      name: member.username,
       type: ChannelType.GuildVoice,
-      parent: yeniKanal.channel.parentId,
+      parent: newChannel.channel.parentId,
       permissionOverwrites: [
         {
-          id: üye.id,
+          id: member.id,
           allow: [
             PermissionsBitField.Flags.Speak,
             PermissionsBitField.Flags.Connect,
@@ -110,16 +110,16 @@ client.on('voiceStateUpdate', async (eskiKanal, yeniKanal) => {
           ],
         },
         {
-          id: yeniKanal.guild.id,
+          id: newChannel.guild.id,
           deny: [PermissionsBitField.Flags.Connect]
         }
       ]
     })
-    voice.set(kanal.id, yeniKanal.member);
-    (await kullanıcı).voice.setChannel(kanal.id)
+    voice.set(channel.id, newChannel.member);
+    (await user).voice.setChannel(channel.id)
   }
 
-  if (voice.get(eskiKanal.channelId) && eskiKanal.channel.members.size == 0) return eskiKanal.channel.delete().catch(() => {});
+  if (voice.get(newChannel.channelId) && newChannel.channel.members.size == 0) return newChannel.channel.delete().catch(() => {});
 })
 
 client.login("")
